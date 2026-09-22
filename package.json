@@ -1,6 +1,6 @@
 {
   "name": "nocturne-player",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A themeable, accessible video player for React — chapters, captions, ambient glow, keyboard control and picture-in-picture in one component.",
   "license": "MIT",
   "author": "NourEldin Mahmoud",
