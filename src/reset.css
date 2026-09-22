@@ -1,0 +1,29 @@
+/*
+ * A small, hand-picked substitute for Tailwind's Preflight. Preflight resets bare element
+ * selectors (*, button, svg...) across the WHOLE document — safe inside an app that already
+ * runs Tailwind everywhere, but not safe to ship in a library CSS file that loads on pages we
+ * don't control. scripts/build-css.mjs scopes every selector below under .nocturne-player, the
+ * same way it scopes the Tailwind utilities, so none of this reaches the rest of the page.
+ * This covers only the assumptions the player's own utility classes actually depend on.
+ */
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+  border-color: currentColor;
+}
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  cursor: pointer;
+}
+svg {
+  display: block;
+  vertical-align: middle;
+}
+video {
+  max-width: 100%;
+}

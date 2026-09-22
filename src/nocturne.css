@@ -1,0 +1,23 @@
+/*
+ * The few styles Tailwind utilities can't express. Colors read the same --nct-* variables
+ * as the component, with the same fallbacks, so theming from the cascade works everywhere.
+ */
+
+.nct-shell:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.nct-shell:focus-visible,
+.nct-focus:focus-visible {
+  outline: 2px solid var(--nct-accent, #f2c14e);
+  outline-offset: 2px;
+}
+
+/* Native captions. Size is set per-instance through --nct-cue-size. */
+.nct-shell video::cue {
+  background: rgba(0, 0, 0, 0.72);
+  color: #fff;
+  font-size: var(--nct-cue-size, 19px);
+  line-height: 1.35;
+  border-radius: 6px;
+}

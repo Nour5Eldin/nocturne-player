@@ -1,0 +1,5 @@
+/* Theme tokens + utilities only — no Preflight. See src/reset.css for why. */
+@layer theme, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@source "../src";
