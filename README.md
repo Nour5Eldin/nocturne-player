@@ -27,12 +27,12 @@ animations. A vanilla-JS/web-components build is possible as a separate package 
 **Bundler: [`tsup`](https://tsup.egoist.dev/)** (esbuild under the hood). One entry point
 (`src/index.ts`), two output formats:
 
-| File | Format | Consumers |
-| --- | --- | --- |
-| `dist/index.js` | ESM | Vite, Next.js, modern bundlers, `"type": "module"` projects |
-| `dist/index.cjs` | CommonJS | older Node tooling, `require()` |
-| `dist/index.d.ts` / `dist/index.d.cts` | Types | both, matched via `package.json#exports` |
-| `dist/style.css` | Plain CSS | anyone, via a separate `import "nocturne-player/style.css"` |
+| File                                   | Format    | Consumers                                                   |
+| -------------------------------------- | --------- | ----------------------------------------------------------- |
+| `dist/index.js`                        | ESM       | Vite, Next.js, modern bundlers, `"type": "module"` projects |
+| `dist/index.cjs`                       | CommonJS  | older Node tooling, `require()`                             |
+| `dist/index.d.ts` / `dist/index.d.cts` | Types     | both, matched via `package.json#exports`                    |
+| `dist/style.css`                       | Plain CSS | anyone, via a separate `import "nocturne-player/style.css"` |
 
 `package.json#exports` maps both formats and their type files correctly (verified with
 [`publint`](https://publint.dev/), which is wired into `npm run prepublishOnly` and CI — see §5).
@@ -46,6 +46,7 @@ bundling is done. This makes the package safe to import from a Next.js App Route
 component tree without the caller needing to know or care.
 
 **Peer vs. regular dependencies.**
+
 - `react` / `react-dom` are **peerDependencies** (`^18.2.0 || ^19.0.0`) — standard for a
   component library, so the consumer's own React instance is used, not a bundled second copy.
 - `framer-motion` is a regular **dependency** (`^13.4.0`) but marked `external` in the `tsup`
@@ -87,21 +88,21 @@ future work (§7), not a small change.
 
 ### `<Nocturne>` props
 
-| Prop | Type | Notes |
-| --- | --- | --- |
-| `src` | `string` | Required. Changing it remounts the player with fresh state. |
-| `poster` | `string` | Also tints the ambient glow before the first play. |
-| `subtitles` | `{ src, lang?, label? }` | WebVTT. Needs CORS headers (video gets `crossOrigin="anonymous"`). |
-| `title`, `eyebrow` | `string` | Overlay text. Fades out with the controls. |
-| `chapters` | `{ time, label }[]` | Ticks on the seek bar, tooltip labels, a list in Settings. |
-| `captions` | `boolean` | Captions on by default. |
-| `playback` | `Partial<PlaybackOptions>` | `autoPlay`, `startMuted`, `loop`, `pauseOffscreen`, `startAt`, `speed`, `volume` |
-| `chrome` | `Partial<ChromeOptions>` | `layout` (`"floating" \| "edge"`), `hideAfter`, `skipBy`, `showSkip/Volume/Time/Settings/Pip/Fullscreen`, `volumeReveal`, `volumeWidth`, `keyboard`, `tapToSeek`, `clickToPlay` |
-| `look` | `Partial<LookOptions>` | `accent`, `panel`, `ink`, `rail`, `backdrop`, `corner`, `fit`, `heroSize` |
-| `glow` | `Partial<GlowOptions>` | `enabled`, `strength`, `spread`, `softness`, `rate` |
-| `aspectRatio`, `className`, `style` | | Layout of the outer wrapper. Default aspect ratio `16 / 9`. |
-| `onPrefsChange` | `(patch: Partial<NocturnePrefs>) => void` | The event surface — fires when the viewer changes volume, mute, speed, ambient mode or captions. |
-| `ref` | `Ref<NocturneHandle>` | `play()`, `pause()`, `toggle()`, `seek(seconds)`, `element` |
+| Prop                                | Type                                      | Notes                                                                                                                                                                           |
+| ----------------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src`                               | `string`                                  | Required. Changing it remounts the player with fresh state.                                                                                                                     |
+| `poster`                            | `string`                                  | Also tints the ambient glow before the first play.                                                                                                                              |
+| `subtitles`                         | `{ src, lang?, label? }`                  | WebVTT. Needs CORS headers (video gets `crossOrigin="anonymous"`).                                                                                                              |
+| `title`, `eyebrow`                  | `string`                                  | Overlay text. Fades out with the controls.                                                                                                                                      |
+| `chapters`                          | `{ time, label }[]`                       | Ticks on the seek bar, tooltip labels, a list in Settings.                                                                                                                      |
+| `captions`                          | `boolean`                                 | Captions on by default.                                                                                                                                                         |
+| `playback`                          | `Partial<PlaybackOptions>`                | `autoPlay`, `startMuted`, `loop`, `pauseOffscreen`, `startAt`, `speed`, `volume`                                                                                                |
+| `chrome`                            | `Partial<ChromeOptions>`                  | `layout` (`"floating" \| "edge"`), `hideAfter`, `skipBy`, `showSkip/Volume/Time/Settings/Pip/Fullscreen`, `volumeReveal`, `volumeWidth`, `keyboard`, `tapToSeek`, `clickToPlay` |
+| `look`                              | `Partial<LookOptions>`                    | `accent`, `panel`, `ink`, `rail`, `backdrop`, `corner`, `fit`, `heroSize`                                                                                                       |
+| `glow`                              | `Partial<GlowOptions>`                    | `enabled`, `strength`, `spread`, `softness`, `rate`                                                                                                                             |
+| `aspectRatio`, `className`, `style` |                                           | Layout of the outer wrapper. Default aspect ratio `16 / 9`.                                                                                                                     |
+| `onPrefsChange`                     | `(patch: Partial<NocturnePrefs>) => void` | The event surface — fires when the viewer changes volume, mute, speed, ambient mode or captions.                                                                                |
+| `ref`                               | `Ref<NocturneHandle>`                     | `play()`, `pause()`, `toggle()`, `seek(seconds)`, `element`                                                                                                                     |
 
 All the grouped option types (`PlaybackOptions`, `ChromeOptions`, `LookOptions`, `GlowOptions`,
 `NocturnePrefs`, `Chapter`, `NocturneHandle`) are exported for your own typing. Defaults live in
@@ -110,6 +111,7 @@ All the grouped option types (`PlaybackOptions`, `ChromeOptions`, `LookOptions`,
 ### Customization model
 
 Three layers, cheapest first:
+
 1. **CSS variables** (`look.accent`, or the `--nct-*` custom properties directly) — for color.
 2. **Props** (`chrome`, `look`, `glow`) — for layout/behavior toggles the component already
    supports.
@@ -121,16 +123,39 @@ Three layers, cheapest first:
 
 ## 3. Integration guide
 
+Install `nocturne-player` with the package manager used by your project:
+
+### npm
+
 ```bash
 npm install nocturne-player
 ```
 
-(`framer-motion` installs automatically as a dependency; add `react` / `react-dom` if your
-project doesn't already have them, since they're peer dependencies.)
+### pnpm
+
+```bash
+pnpm add nocturne-player
+```
+
+### yarn
+
+```bash
+yarn add nocturne-player
+```
+
+### bun
+
+```bash
+bun add nocturne-player
+```
+
+`framer-motion` is installed automatically as a dependency. Your application should already provide `react` and `react-dom` because they are declared as peer dependencies.
+
+### Basic usage
 
 ```tsx
 import { Nocturne } from "nocturne-player";
-import "nocturne-player/style.css"; // once, anywhere near your app's root
+import "nocturne-player/style.css";
 
 export default function Page() {
   return (
@@ -142,35 +167,37 @@ export default function Page() {
         { time: 0, label: "Opening" },
         { time: 95, label: "The turn" },
       ]}
-      subtitles={{ src: "/media/film.en.vtt", lang: "en", label: "English" }}
+      subtitles={{
+        src: "/media/film.en.vtt",
+        lang: "en",
+        label: "English",
+      }}
       className="mx-auto max-w-4xl"
     />
   );
 }
 ```
 
-That's the entire integration — no `tailwind.config`, no PostCSS setup, no build step of your
-own. `Nocturne` is a client component: import it from a server component (Next.js App Router)
-or a plain client component, either works. It fills its container's width at `aspect-ratio: 16 /
-9` by default (`aspectRatio` prop to change it).
+That's the entire integration. No `tailwind.config`, no PostCSS setup, and no build step is required in the consuming application.
 
-**If your project already runs Tailwind:** you don't need the CSS import at all. Point your own
-Tailwind build at the package so it generates the same utilities from *your* theme (same colors,
-spacing, fonts as the rest of your app, and zero duplicate CSS):
+`Nocturne` is a client component and works in both Next.js App Router applications and regular React applications. It fills its container's width and uses a `16 / 9` aspect ratio by default. Use the `aspectRatio` prop to change it.
+
+### If your project already uses Tailwind CSS
+
+You don't need to import the prebuilt stylesheet if your application already runs Tailwind. Instead, point your Tailwind build at the compiled package so it can generate the utilities using your application's own theme:
 
 ```css
 /* your global.css, Tailwind v4 */
 @import "tailwindcss";
+
 @source "../node_modules/nocturne-player/dist/index.js";
 ```
 
-I verified this actually works — running Tailwind's CLI with that `@source` line against the
-package's real compiled output produces matching rules for every class the component uses,
-including compound ones like `group-hover/rail:h-1.5` and `hover:bg-white/12`, in the host
-project's own theme. (Tailwind v3's `content` array does the same job: add the same path there.)
+This allows the player to use the host application's Tailwind theme without shipping a second copy of the generated utility CSS.
 
-A working, from-scratch example (plain Vite + React, no Tailwind) is in
-[`examples/basic-vite`](examples/basic-vite).
+For Tailwind v3, add the same package path to your `content` configuration.
+
+A working from-scratch example using plain Vite + React, without Tailwind, is available in [`examples/basic-vite`](examples/basic-vite).
 
 ---
 
@@ -180,9 +207,14 @@ A working, from-scratch example (plain Vite + React, no Tailwind) is in
 
 ```css
 .nocturne-player {
-  --nct-accent: #f2c14e;   /* progress fill, focus ring, play button, active icons */
-  --nct-panel: rgba(16, 16, 20, 0.62);  /* control-dock background (floating layout) */
-  --nct-ink: #fff;         /* icon/text color */
+  --nct-accent: #f2c14e; /* progress fill, focus ring, play button, active icons */
+  --nct-panel: rgba(
+    16,
+    16,
+    20,
+    0.62
+  ); /* control-dock background (floating layout) */
+  --nct-ink: #fff; /* icon/text color */
   --nct-rail: rgba(255, 255, 255, 0.2); /* seek-bar and volume-bar track */
   --nct-backdrop: #0b0b0e; /* player background before video paints */
 }
@@ -200,6 +232,7 @@ tap-to-seek), `glow` (ambient glow on/off and intensity), `playback` (autoplay, 
 time, speed).
 
 **Beyond props — composition, not forking:**
+
 - `className` / `style` on the root position and size the player in your layout; the component
   itself never sets margin or absolute positioning on itself.
 - The `ref` handle (`play`, `pause`, `toggle`, `seek`, `element`) lets you drive playback from
@@ -222,9 +255,9 @@ time, speed).
 Tailwind, so it's worth explaining rather than leaving as a black box:
 
 1. `scripts/build-css.mjs` runs Tailwind's CLI against `scripts/tailwind-entry.css`, which
-   imports only Tailwind's **theme tokens and utilities layers** — explicitly *not* Preflight
+   imports only Tailwind's **theme tokens and utilities layers** — explicitly _not_ Preflight
    (Tailwind's global element reset). Preflight resets bare selectors like `*`, `button`, `svg`
-   across the *whole document* — fine inside an app that runs Tailwind everywhere, not safe to
+   across the _whole document_ — fine inside an app that runs Tailwind everywhere, not safe to
    ship in a library stylesheet that loads on pages this package doesn't control.
 2. `src/reset.css` is a hand-picked, 15-line substitute covering only what the component's own
    utility classes actually assume (`box-sizing: border-box`, a couple of button/svg baselines).
@@ -238,7 +271,7 @@ Tailwind, so it's worth explaining rather than leaving as a black box:
    available to the whole subtree by inheritance.
 4. `@keyframes` names are global in CSS with no scoping mechanism at all — a host page that
    happens to define its own `@keyframes spin` would silently fight with the player's loading
-   spinner, whichever one loads last winning for *both*. Every keyframe name gets a
+   spinner, whichever one loads last winning for _both_. Every keyframe name gets a
    `nocturne-player-` prefix, and the couple of theme values that reference them by name
    (Tailwind's `--animate-spin` token) are rewritten to match.
 5. Everything is arranged into three [CSS cascade layers](https://developer.mozilla.org/en-US/docs/Web/CSS/@layer)
@@ -286,6 +319,7 @@ pipeline, no real layout, and (I confirmed directly, worth knowing if you extend
 does not execute `<script type="module">` at all — so testing an actual bundled build's runtime
 behavior needs more than jsdom-in-isolation. To validate the packaging claims in this README for
 real rather than by inspection, I:
+
 - Ran `npm pack` and installed the **real tarball** (not the source directory) into a brand-new,
   separate Vite + React project with no Tailwind anywhere in it, and confirmed `tsc --noEmit`
   and `vite build` both succeed against it — proving the `exports` map, `.d.ts` resolution, and
@@ -302,7 +336,7 @@ real rather than by inspection, I:
   matching utility rules, including compound variants.
 - Ran `publint` against the packed tarball.
 
-What's *not* verified, because it needs a real browser and this environment doesn't have one:
+What's _not_ verified, because it needs a real browser and this environment doesn't have one:
 actual visual rendering, click/drag/touch interaction, fullscreen, picture-in-picture, and the
 ambient glow's live sampling. If you're setting up further QA, that's the gap to fill —
 Playwright against the built `examples/basic-vite` app is the natural next step.
@@ -311,7 +345,7 @@ Playwright against the built `examples/basic-vite` app is the natural next step.
 
 ## 6. Compatibility notes
 
-- **React** 18.2+ or 19 (peer dependency range above). **Node** 20.9+ to *build* the package —
+- **React** 18.2+ or 19 (peer dependency range above). **Node** 20.9+ to _build_ the package —
   a consumer installing the published `dist/` doesn't need any particular Node version at
   runtime, since it's browser code.
 - **Browsers:** evergreen Chrome, Firefox, Safari, Edge (last ~2 versions). The component
@@ -358,7 +392,7 @@ to-close-and-return-focus, a live region announcing play/pause/seek/volume/speed
 screen-reader QA has been done with a real screen reader (VoiceOver/NVDA) — both worth doing
 before calling accessibility "complete" rather than "substantially covered."
 
-**Phase 2 — responsive sizing.** Also already in place: the player watches its *own* container
+**Phase 2 — responsive sizing.** Also already in place: the player watches its _own_ container
 width with `ResizeObserver` (not just viewport width), so it correctly drops secondary controls
 in a narrow sidebar or a grid cell, not just on a narrow screen.
 
@@ -370,6 +404,7 @@ else. DASH would follow the same pattern with `dash.js` if there's demand for it
 I'd want to know whether HLS alone covers your actual use case before building both.
 
 **Other real next steps**, roughly in order of how likely they are to matter soon:
+
 - Playwright visual/interaction tests against `examples/basic-vite` (the gap called out in §5).
 - A published `CHANGELOG.md`, once there's a second release to log.
 - Decide whether sub-components (a standalone seek bar, a standalone volume control) are worth
