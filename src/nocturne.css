@@ -9,7 +9,7 @@
 
 .nct-shell:focus-visible,
 .nct-focus:focus-visible {
-  outline: 2px solid var(--nct-accent, #f2c14e);
+  outline: 2px solid var(--nct-accent, #FDFEFF);
   outline-offset: 2px;
 }
 

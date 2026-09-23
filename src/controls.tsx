@@ -3,7 +3,7 @@
 import { m } from "framer-motion";
 import { useRef } from "react";
 import type { CSSProperties, KeyboardEventHandler, PointerEvent, PointerEventHandler, ReactNode, Ref, RefObject } from "react";
-import { EASE, RATES, T } from "./constants";
+import { EASE, LAYOUTS, RATES, T } from "./constants";
 import { IconSpeaker } from "./icons";
 import type { Chapter } from "./types";
 import { clampTo, clock, cn } from "./utils";
@@ -279,6 +279,8 @@ interface SettingsMenuProps {
   tight: boolean;
   rate: number;
   onRate: (r: number) => void;
+  layout: (typeof LAYOUTS)[number]["value"];
+  onLayout: (l: (typeof LAYOUTS)[number]["value"]) => void;
   ambient: boolean;
   onAmbient: () => void;
   loop: boolean;
@@ -306,6 +308,8 @@ export function SettingsMenu({
   tight,
   rate,
   onRate,
+  layout,
+  onLayout,
   ambient,
   onAmbient,
   loop,
@@ -360,6 +364,29 @@ export function SettingsMenu({
               style={on ? { background: T.accent, color: T.backdrop } : undefined}
             >
               {r === 1 ? "Normal" : `${r}×`}
+            </button>
+          );
+        })}
+      </div>
+
+      <div className={cn(SECTION, "mb-2")}>Layout</div>
+      <div className="mb-3.5 flex flex-wrap gap-1.5">
+        {LAYOUTS.map((l) => {
+          const on = layout === l.value;
+          return (
+            <button
+              key={l.value}
+              type="button"
+              role="menuitemradio"
+              aria-checked={on}
+              onClick={() => onLayout(l.value)}
+              className={cn(
+                "nct-focus cursor-pointer rounded-full border-0 px-2.5 py-1.5 text-xs font-semibold transition-colors motion-reduce:transition-none",
+                !on && "bg-white/[0.07] text-white hover:bg-white/[0.14]",
+              )}
+              style={on ? { background: T.accent, color: T.backdrop } : undefined}
+            >
+              {l.name}
             </button>
           );
         })}

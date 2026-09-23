@@ -2,6 +2,10 @@ import type { ChromeOptions, GlowOptions, LookOptions, PlaybackOptions } from ".
 
 export const RATES: readonly number[] = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
 
+export const LAYOUTS = [
+  { name: "Floating", value: "floating" },
+  { name: "Edge", value: "edge" },
+] as const;
 /** Defaults copied from the Framer component's `defaultProps`. */
 export const DEFAULT_PLAYBACK: PlaybackOptions = {
   autoPlay: false,

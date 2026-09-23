@@ -4,7 +4,7 @@ import "./nocturne.css";
 import { AnimatePresence, LazyMotion, MotionConfig, domAnimation, m, useReducedMotion } from "framer-motion";
 import { useCallback, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties, KeyboardEvent, PointerEvent } from "react";
-import { DEFAULT_CHROME, DEFAULT_GLOW, DEFAULT_LOOK, DEFAULT_PLAYBACK, EASE, RATES, T } from "./constants";
+import { DEFAULT_CHROME, DEFAULT_GLOW, DEFAULT_LOOK, DEFAULT_PLAYBACK, EASE, LAYOUTS, RATES, T } from "./constants";
 import { IconButton, ProgressRail, SettingsMenu, VolumeControl } from "./controls";
 import { useBoxWidth, useOnScreen, usePipSupported, useSyncedState, useTabShown } from "./hooks";
 import { IconAhead, IconBack, IconCaptions, IconExpand, IconPause, IconPip, IconPlay, IconTune } from "./icons";
@@ -110,6 +110,7 @@ function Theatre(props: NocturneProps) {
   const [looping, setLooping] = useSyncedState(!!playback.loop);
   const [subsOn, setSubsOn] = useSyncedState(!!captions);
   const [lit, setLit] = useSyncedState(!!glow.enabled);
+  const [layout, setLayout] = useSyncedState<(typeof LAYOUTS)[number]["value"]>(chrome.layout);
   const [countdown, setCountdown] = useState(false);
   const [chromeUp, setChromeUp] = useState(true);
   const [menu, setMenu] = useState(false);
@@ -680,8 +681,8 @@ function Theatre(props: NocturneProps) {
   const peekChapter = peek != null ? chapterAt(marks, peek) : null;
   const showChrome = chromeUp || !running || menu || dragging;
   const hideCursor = running && !chromeUp && !menu;
-  const floatingDock = chrome.layout === "floating";
-  const inset = chrome.layout === "edge" ? 0 : tight ? 8 : 14;
+  const floatingDock = layout === "floating";
+  const inset = layout === "edge" ? 0 : tight ? 8 : 14;
   const pad = tight ? 8 : 12;
   const btn = tight ? 34 : 38;
   const glyph = tight ? 18 : 20;
@@ -1002,6 +1003,8 @@ function Theatre(props: NocturneProps) {
                   tight={tight}
                   rate={rate}
                   onRate={applyRate}
+                  layout={layout}
+                  onLayout={setLayout}
                   ambient={lit}
                   onAmbient={toggleAmbient}
                   loop={looping}
