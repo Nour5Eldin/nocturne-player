@@ -4,6 +4,10 @@
   "description": "A themeable, accessible video player for React — chapters, captions, ambient glow, keyboard control and picture-in-picture in one component.",
   "license": "MIT",
   "author": "NourEldin Mahmoud",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Nour5Eldin/nocturne-player.git"
+  },
   "keywords": [
     "react",
     "video",
