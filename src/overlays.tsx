@@ -38,7 +38,7 @@ export function PlayHero({ visible, size, finished, onPress }: { visible: boolea
       {visible && (
         <m.div
           key="hero"
-          className="pointer-events-none absolute inset-0 z-[4] grid place-items-center"
+          className="pointer-events-none absolute inset-0 z-4 grid place-items-center"
           initial={{ opacity: 0, scale: 0.85 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.85 }}
@@ -74,7 +74,7 @@ export function PlayHero({ visible, size, finished, onPress }: { visible: boolea
 export function PulseBadge({ pulse, skipBy }: { pulse: Pulse; skipBy: number }) {
   const left = pulse.kind === "back" ? "22%" : pulse.kind === "ahead" ? "78%" : "50%";
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute top-1/2 z-[4] -translate-x-1/2 -translate-y-1/2" style={{ left }}>
+    <div aria-hidden="true" className="pointer-events-none absolute top-1/2 z-4 -translate-x-1/2 -translate-y-1/2" style={{ left }}>
       <m.div
         className="grid h-16 min-w-16 place-items-center rounded-full bg-black/50 px-3.5 text-[13px] font-semibold text-white"
         initial={{ opacity: 0, scale: 0.7 }}
@@ -96,7 +96,7 @@ export function BufferingSpinner() {
     <m.div
       role="status"
       aria-label="Loading"
-      className="pointer-events-none absolute top-1/2 left-1/2 z-[4] -mt-[23px] -ml-[23px] size-[46px] animate-spin rounded-full border-[3px] border-white/18 motion-reduce:animate-none"
+      className="pointer-events-none absolute top-1/2 left-1/2 z-4 -mt-5.75 -ml-5.75 size-11.5 animate-spin rounded-full border-[3px] border-white/18 motion-reduce:animate-none"
       style={{ borderTopColor: T.accent }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -107,7 +107,7 @@ export function BufferingSpinner() {
 
 export function ErrorState() {
   return (
-    <div role="alert" className="absolute inset-0 z-[5] grid place-items-center bg-black/60 p-6 text-center" style={{ color: T.ink }}>
+    <div role="alert" className="absolute inset-0 z-5 grid place-items-center bg-black/60 p-6 text-center" style={{ color: T.ink }}>
       <div className="grid justify-items-center gap-2.5">
         <IconAlert size={32} color={T.accent} />
         <div className="text-[15px] font-semibold">This video can’t be played</div>
@@ -144,7 +144,7 @@ export function TitleBlock({
 }) {
   return (
     <m.div
-      className="pointer-events-none absolute z-[3]"
+      className="pointer-events-none absolute z-3"
       style={{ top: pad + 4, left: pad + 8, right: pad + 8, color: T.ink }}
       initial={false}
       animate={visible ? { opacity: 1, y: 0 } : { opacity: 0, y: -6 }}

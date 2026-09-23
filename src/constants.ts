@@ -53,7 +53,7 @@ export const DEFAULT_GLOW: GlowOptions = {
  * page can theme the player from CSS (`--nct-accent: ...`) or through the `look` prop.
  */
 export const T = {
-  accent: "var(--nct-accent, #F2C14E)",
+  accent: "var(--nct-accent, #FDFEFF)",
   panel: "var(--nct-panel, rgba(16,16,20,0.62))",
   ink: "var(--nct-ink, #FFFFFF)",
   rail: "var(--nct-rail, rgba(255,255,255,0.2))",
